@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int RED=1;
+int GREEN=2;
+int BLUE=3;
+
+int mc(int cost[][],int color,int i){
+    if(i==3){
+        return 0;
+    }
+    if(color==RED){
+        int costBLUE=mc(cost,BLUE,i+1);
+        int costGREEN=mc(cost,GREEN,i+1);
+        return cost[RED][i]+min(costBLUE,costGREEN);
+    }
+    else if(color==BLUE){
+        int costRED=mc(cost,RED,i+1);
+        int costGREEN=mc(cost,GREEN,i+1);
+        return cost[BLUE][i]+min(costRED,costGREEN);
+    }
+    else if(color==GREEN){
+        int costBLUE=mc(cost,BLUE,i+1);
+        int costRED=mc(cost,RED,i+1);
+        return cost[GREEN][i]+min(costBLUE,costRED);
+    }
+    return 0;
+}
+
+
+int main(){
+    
+    cout<<min(mc(cost,RED,0),mc(cost,BLUE,0),mc(cost,GREEN,0));
+    
+    return 0;
+}

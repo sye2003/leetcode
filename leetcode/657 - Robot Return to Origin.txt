@@ -1,0 +1,168 @@
+class Solution {
+public:
+    bool judgeCircle(string moves) {
+        int i, x=0, y=0;
+        for(i=0 ; i<moves.length() ; i++)
+        {
+            if(moves[i]=='U')
+                x++;
+            else if(moves[i]=='D')
+                x--;
+            else if(moves[i]=='R')
+                y++;
+            else if(moves[i]=='L')
+                y--;
+        }
+        if(x==0 && y==0)
+            return true;
+        return false;
+    }
+};
+
+=================================
+
+class Solution {
+public:
+    bool judgeCircle(string moves) {
+        int u, d, l, r;
+        u = count(moves.begin(), moves.end(), 'U');
+        d = count(moves.begin(), moves.end(), 'D');
+        l = count(moves.begin(), moves.end(), 'L');
+        r = count(moves.begin(), moves.end(), 'R');
+        if(u==d && l==r)
+            return true;
+        return false;
+    }
+};
+======================================
+
+HashMap
+--------
+class Solution {
+public:
+    bool judgeCircle(string moves) {
+        if(moves.length()==0){  // if string is empty return true
+            return true;
+        }
+
+        unordered_map<char,int> um;
+
+        for(int i=0;i<moves.length();i++){
+            um[moves[i]]++;  //here we are mapping char with its count
+        }
+
+        if(um['L']==um['R'] && um['U']==um['D']){
+            return true;
+        }
+        return false;
+    }
+};
+
+
+class Solution {
+public:
+    bool judgeCircle(string moves) {
+        unordered_map<char,int> ump;
+        for(const auto& i : moves) ump[i]++;
+        return ump['L'] - ump['R'] == 0 && ump['D'] - ump['U'] == 0;
+    }
+};
+
+==================================
+
+Recursion
+----------
+int n;
+vector<vector<int>> directions = {{85, -1, 0}, {68, 1, 0}, {76, 0, -1}, {82, 0, 1}};
+//                                   "Up"        "Down"       "Left"      "Right"
+// #1 Method helper
+bool canEndAtZeroZero(string& moves, int i, int j, int k) {
+    // Edge case: When all the "moves" are exhausted.
+    if(k == n) {
+        // Return true, If the robot returns to the origin.
+        if(i == 0 && j == 0)
+            return true;
+        // Else return false, When the robot does not returns to the origin.
+        else
+            return false;
+    }
+
+    // Require to store the resultant value.
+    bool answer = false;
+
+    // Iterate and check for all the "moves".
+    for(auto& dir : directions) {
+        if(moves[k] == dir[0])
+            answer |= canEndAtZeroZero(moves, i + dir[1], j + dir[2], k + 1);
+
+        // If the robot has returned to the origin.
+        if(answer) break;
+    }
+
+    // Return the resultant value.
+    return answer;
+}
+
+// #1 Method to check whether the robot returns to the origin or not - O(4^N) & O(N) : Where N let be the size of string "moves".
+bool judgeCircle(string moves) {
+    n = moves.length();
+
+    // Edge case: When the length of "moves" is 1, we cant return to the origin.
+    if(n == 1) 
+        return false;
+
+    return canEndAtZeroZero(moves, 0, 0, 0);
+}
+
+
+==========================================
+
+
+Stack
+------
+bool judgeCircle(string moves) {
+      stack<char>hori;
+        stack<char> vert;
+        for(int i=0;i<moves.length();i++)
+        {
+            if(moves[i]=='R')
+            {
+                if(hori.empty()||hori.top()=='R')
+                hori.push(moves[i]);
+                else
+                    if(hori.top()=='L')
+                        hori.pop();
+                
+            }
+            else if(moves[i]=='U')
+            {
+                if(vert.empty()||vert.top()=='U')
+                vert.push(moves[i]);
+                else
+                    if(vert.top()=='D')
+                        vert.pop();
+            }
+            else if(moves[i]=='L')
+            {
+                if(hori.empty()||hori.top()=='L')
+                    hori.push(moves[i]);
+                else
+                    if(hori.top()=='R')
+                        hori.pop();
+            }
+            else if(moves[i]=='D')
+            {
+                if(vert.empty()||vert.top()=='D')
+                    vert.push(moves[i]);
+                else
+                    if(vert.top()=='U')
+                        vert.pop();
+            }
+                
+        }
+        if(hori.empty()&&vert.empty())
+            return true;
+        else
+            return false;
+    }
+};

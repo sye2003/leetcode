@@ -1,0 +1,131 @@
+class Solution
+{
+public:
+    string defangIPaddr(string address)
+    {
+        string toReturn = "";
+
+        for (int i = 0; i < address.size(); i++)
+        {
+
+            if (address[i] == '.')
+            {
+                toReturn += "[.]";
+            }
+            else
+            {
+                toReturn += address[i];
+            }
+        }
+        return toReturn;
+    }
+};
+
+
+
+
+
+__________________________________________________________
+
+Recursion
+
+
+class Solution {
+public:
+int i=0;
+    string defangIPaddr(string address) {
+        if(i>=address.length())
+        return "";
+        if(address[i]=='.'){
+         i++;
+        return "[.]" + defangIPaddr(address);
+        }
+        return address[i++]+defangIPaddr(address);
+    }
+};
+
+
+
+
+
+______________________________________________________________
+
+
+
+
+stack
+
+
+
+class Solution {
+public:
+    string defangIPaddr(string address) {
+        stack<char> st;
+        reverse(address.begin(),address.end());
+        for(int i=0;i<address.length();i++){
+            if(address[i] == '.'){
+                st.push(']');
+                st.push('.');
+                st.push('[');
+            }
+            else{
+                st.push(address[i]);
+            }
+        }
+        string ans = "";
+        while(!st.empty()){
+            ans = ans + st.top();
+            st.pop();
+        }
+        return ans;
+    }
+};
+
+
+
+
+
+_________________________________________________________________________
+
+
+queue
+
+
+
+class Solution {
+public:
+    string defangIPaddr(string a) {
+        queue<char>q;
+        int i=0;
+        while(i<a.size()){
+            q.push(a[i]);
+            i++;
+        }
+
+        string s;
+        while(!q.empty()){
+            if(q.front()=='.'){
+                s+='[';
+                s+='.';
+                s+=']';
+                q.pop();
+            }
+
+            else{
+                s+=q.front();
+                q.pop();
+            }
+        }
+        return s;
+    }
+};
+
+
+
+
+
+
+
+
+
+

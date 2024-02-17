@@ -1,0 +1,30 @@
+#include <stdio.h>
+void solve(int x, int y, int k) {
+int timetaken = 0;
+if (y <= x) {
+timetaken = x;
+} 
+else if (x < y) {
+if ((y - x) > k) {
+timetaken = 2 * y - (x + k);
+}
+else {
+timetaken = y;
+}
+}
+printf("%d\n", timetaken);
+}
+int main() {
+int x = 0, y = 0, k = 0, t;
+scanf("%d", &t);
+for (int i = 0; i < t; i++) {
+scanf("%d %d %d", &x, &y, &k);
+solve(x, y, k);
+}
+return 0;
+}
+
+
+problem link:
+
+https://codeforces.com/problemset/problem/1895/A

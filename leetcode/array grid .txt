@@ -1,0 +1,23 @@
+array grid 
+
+
+
+#include <iostream>
+using namespace std;
+int main() {
+    int array[8][8]={0};
+    int a,b;
+   // char c;
+    cin>>a>>b;
+    //cout<< array[i][j]; 
+   // if(c=='')
+    for( int i=0;i<a;i++){
+        cout<<"\n";
+      for(int j=0;j<b;j++){
+          cout<<array[i][j];
+          
+      }
+    }
+    
+    return 0;
+}

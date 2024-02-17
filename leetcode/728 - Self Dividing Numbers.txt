@@ -1,0 +1,202 @@
+class Solution {
+public:
+
+    bool check(int n)
+    {
+        int temp = n;
+        while (n != 0)
+        {
+            int rem = n % 10;
+            if (rem==0)
+                return false;
+            if (temp % rem != 0)
+                return false;
+            n = n / 10;
+        }
+        return true;
+    }
+
+    vector<int> selfDividingNumbers(int left, int right) {
+        
+    vector<int> ans;
+    for (int i = left; i <= right; i++)
+        if (check(i))
+            ans.push_back(i);
+    return ans;
+
+    }
+};
+--------------------------
+
+class Solution {
+public:
+    vector<int> selfDividingNumbers(int left, int right) {
+        vector<int> ans;
+        for(int i=left;i<right+1;i++){
+            int temp=i;
+            bool flag=1;
+            while(temp>0){
+                if(temp%10!=0 and i%(temp%10)==0) temp/=10;
+                
+                else{
+                    flag=0;
+                    break;
+                }
+            }
+            if(flag) ans.push_back(i);
+        }
+        return ans;
+    }
+};
+--------------------------------
+
+Recursion
+==========
+class Solution {
+public:
+bool solve(int n,int x){
+  if(n==0 || x==0)
+   return true;
+  if(n%10==0)
+     return false;
+ int temp =x%(n%10);
+  if(temp==0)
+    return solve(n/10,x);
+ return false;
+ }
+ 
+     vector<int> selfDividingNumbers(int left, int right) {
+        vector<int> ans;
+        for(int i=left;i<=right;i++){
+            if(solve(i,i))
+            ans.push_back(i);
+        }
+        return ans;
+    }
+};
+
+============================
+Using Pointers
+----------------
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* selfDividingNumbers(int left, int right, int* returnSize){
+
+int * returnArray = (int*)malloc((right-left+1)*sizeof(int)) ;
+int m = 0 ;   // index for returnArray
+*returnSize = 0;
+
+
+for (int i = left ;i<= right ;i++) {
+int verifier = 1;
+int n = i;
+int rem ;
+while ( n>0 ) {
+  verifier =1 ;  
+rem =n%10 ;
+
+  if (rem == 0 || i % rem != 0) {
+  verifier = 0;
+  break; // No need to continue checking if not self-dividing
+   }
+
+n = n/10 ;
+
+}
+
+if (verifier == 1) {
+
+returnArray[m] =  i ; 
+m++;
+
+(*returnSize) ++;
+
+}
+
+}
+
+return returnArray ;
+
+}
+-----------------------------------
+
+
+Bit Manipulation
+-----------------
+
+int* selfDividingNumbers(int left, int right, int* returnSize){
+    unsigned int digittracker;
+    *returnSize = 0;
+    
+    int cur, digit;
+    bool works;
+    
+	// allocate array
+    int* retval = (int *)malloc(sizeof(int) * (right-left + 1));
+    
+	// iterate over numbers
+    for ( int i = left; i <= right; i++ ){
+        cur = i;
+        works = true;
+        digittracker = 0;
+		
+		// iterate over digits of number
+        while (cur > 0){
+            if (i < 10) break; // if number is under 10, it must be true
+            digit = cur % 10;
+            cur /= 10;
+            if (digit == 0) works = false; // if we see a zero, it must be false
+            else if (digit > 1 && !(digittracker & (1 << digit))){ 
+			// otherwise check if we've seen this digit
+                works = !(i % digit); 
+                digittracker = digittracker | (1 << digit); // flip bit corresponding to number
+            } 
+            
+            if (!works) break;
+        }
+        
+		// add to array
+        if (works) retval[(*returnSize)++] = i;
+    }
+    
+    return retval;
+}
+--------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

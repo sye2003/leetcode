@@ -1,0 +1,150 @@
+class Solution {
+public:
+    int rangeSumBST(TreeNode* root, int low, int high) {
+        if(root == NULL) {
+            return 0;
+        } else {
+            int sum = rangeSumBST(root->left,low,high)+rangeSumBST(root->right,low,high);
+
+            if(root->val >=low && root->val <=high ) {
+                sum += root->val;
+            }
+            return sum;
+        }
+    }
+};
+
+
+_______________________________________________________
+
+
+C, Stack, BinaryTree, Binary-first Search 
+
+
+
+class Solution {
+public:
+    int rangeSumBST(TreeNode* root, int low, int high) {
+        uint32_t sum = 0;
+        std::stack<TreeNode*> nodes_to_pass;
+        nodes_to_pass.push(root);
+        while(!nodes_to_pass.empty()) {
+            TreeNode* current_node = nodes_to_pass.top();
+            if (current_node->val >= low && current_node->val <= high) {
+                sum += current_node->val;
+            }
+            nodes_to_pass.pop();
+            if (current_node->left && current_node->val >= low) {
+                nodes_to_pass.push(current_node->left);
+            }
+            if (current_node->right && current_node->val <= high) {
+                nodes_to_pass.push(current_node->right);
+            }
+        }
+        return sum;
+    }
+};
+
+_____________________________________________________________
+
+
+Queue
+
+
+
+class Solution {
+public:
+    int rangeSumBST(TreeNode* root, int low, int high) {
+        if(root==NULL)
+            return 0;
+        queue <TreeNode *> q;
+        int sum=0;
+        q.push(root);
+        // cout<<q.front()->val;
+        while(!q.empty()){
+            TreeNode * temp=q.front();
+            q.pop();
+            if(temp->val>=low && temp->val<=high)
+                sum+=temp->val;
+            if(temp->left)
+                q.push(temp->left);
+            if(temp->right)
+                q.push(temp->right);
+        }
+        return sum;
+    }
+};
+
+___________________________________________________________________
+
+
+
+
+C++
+Tree
+Depth-First Search
+Binary Search Tree
+Binary Tree
+
+
+
+class Solution {
+public:
+void dfs(TreeNode* root, vector<int>& v, int low, int high){
+    if (root==NULL)return;
+    //if (root->left && root->val>low)dfs(root->left,v,high,low);
+    //v.push_back(root->val);
+    //if (root->right && root->val<high)dfs(root->right,v,high,low);
+    //v.push_back(root->val);
+
+    if (root->left)dfs(root->left,v,high,low);
+    v.push_back(root->val);
+    if (root->right)dfs(root->right,v,high,low);
+}
+    int rangeSumBST(TreeNode* root, int low, int high) {
+        int ans=0;
+        vector<int> v;
+        dfs(root,v,high,low);
+        for (auto val: v){
+            if(val>=low && val<=high)
+            ans+= val;
+        }
+        return ans;
+    }
+};
+
+__________________________________________________________________________
+
+C++
+Binary Search Tree
+Recursion
+Binary Tree
+
+
+class Solution {
+public:
+    void solve(TreeNode* root,int low,int high, int &ans){
+        if(!root) return;
+
+        if(root->val >= low && root->val <= high){
+            ans += root->val;
+            solve(root->left,low,high,ans);
+            solve(root->right,low,high,ans);
+        }
+        else if(root->val > high){
+            solve(root->left,low,high,ans);
+        }
+        else if(root->val < low){
+            solve(root->right,low,high,ans);
+        }
+    }
+
+    int rangeSumBST(TreeNode* root, int low, int high) {
+        int ans = 0;
+        solve(root,low,high,ans);
+        return ans;
+    }
+};
+
+
+__________________________________________________________________

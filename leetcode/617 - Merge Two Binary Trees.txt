@@ -1,0 +1,124 @@
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2)
+    {
+        if(root1 == NULL)
+        {
+            return root2;
+        }
+        if(root2 == NULL)
+        {
+            return root1;
+        }
+        
+        root1->val += root2->val;
+        root1->left = mergeTrees(root1->left,root2->left);
+        root1->right = mergeTrees(root1->right,root2->right);
+        
+        return root1;
+    }
+};
+
+
+BFS Using Queue
+----------------
+TreeNode* mergeTrees(TreeNode* r1, TreeNode* r2) {
+        if(!r1 && !r2) return NULL;
+        if(!r1) return r2;
+        if(!r2) return r1;
+        queue<pair<TreeNode*,TreeNode*>> q;
+        q.push({r1,r2});
+        while(!q.empty()){
+            auto temp = q.front(); q.pop();
+            temp.first->val+=temp.second->val;
+            
+            if(temp.first->left && temp.second->left)
+                q.push({temp.first->left,temp.second->left});
+            else if (temp.second->left)
+                temp.first->left=temp.second->left;
+            
+            if(temp.first->right && temp.second->right)
+                q.push({temp.first->right,temp.second->right});
+            else if (temp.second->right)
+                temp.first->right=temp.second->right;         
+        }
+        return r1;
+    }
+
+
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        if(!root1 && !root2) return NULL;
+        if(!root1) return root2;
+        if(!root2) return root1;
+        queue<pair<TreeNode*, TreeNode*>>q;
+        q.push({root1, root2});
+        while(!q.empty()){
+            auto node = q.front();
+            q.pop();
+            // (1) we add the value of the second tree's node to the first node
+            node.first->val+=node.second->val;
+            
+            //if both their leftnodes exist we push them back into the queue and repeat (1)
+            if(node.first->left && node.second->left)
+                q.push({node.first->left,node.second->left});
+            //if only one node exists then we make both the nodes as the same one
+            // like if the second tree's left node exists then we make the first tree's node left as well
+            else if (node.second->left)
+                node.first->left=node.second->left;
+            
+            //if both their rightnodes exist we push them back into the queue and repeat (1)
+            if(node.first->right && node.second->right)
+                q.push({node.first->right, node.second->right});
+            //if only one node exists then we make both the nodes as the same one
+            // like if the second tree's right node exists then we make the first tree's node right as well
+            else if (node.second->right)
+                node.first->right=node.second->right;
+        }
+        return root1;
+    }
+};
+
+
+Stack
+=======
+
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        if(!root1) return root2;
+        if(!root2) return root1;
+        
+        stack<pair<TreeNode*, TreeNode*> > st;
+        st.emplace(make_pair(root1, root2));
+        
+        while(!st.empty())
+        {
+            pair<TreeNode*, TreeNode*> p = st.top();
+            st.pop();
+            
+            p.first->val += p.second->val;
+            if(p.first->left == nullptr)
+                p.first->left = p.second->left;
+            else if(p.second->left)
+                st.emplace(make_pair(p.first->left, p.second->left));
+            
+            if(p.first->right == nullptr)
+                p.first->right = p.second->right;
+            else if(p.second->right)
+                st.emplace(make_pair(p.first->right, p.second->right));
+        }
+        return root1;
+    }
+};
+
+
+
+
+
+
+
+
+
+

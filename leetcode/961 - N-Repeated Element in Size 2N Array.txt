@@ -1,0 +1,180 @@
+Using hashmap TC:o(n)
+======================
+
+class Solution {
+public:
+    int repeatedNTimes(vector<int>& nums) {
+        unordered_map<int,int>m;
+        for(auto i:nums)
+            m[i]++;
+        for(auto i:m){
+            if(i.second == nums.size()/2)
+                return i.first;
+        }
+        return -1;
+    }
+};
+
+
+class Solution {
+public:
+    int repeatedNTimes(vector<int>& A) {
+        unordered_map<int,int> map;
+        for(int i=0;i<A.size();i++){
+            if(map[A[i]]>0)
+                return A[i];
+            map[A[i]]++;
+        }   
+        return 0;
+    }
+};
+
+
+
+Using sorting TC:o(nlogn)
+=========================
+class Solution {
+public:
+    int repeatedNTimes(vector<int>& A) {
+         sort(A.begin(), A.end());
+         for(size_t i = 0; i < A.size()-1; i++){
+              if(A[i] == A[i+1]) return A[i];
+         }
+         return 0;
+    }
+};
+
+Using Set for less space
+=========================
+class Solution {
+public:
+int repeatedNTimes(vector& nums) {
+	unordered_set st;
+	int n=nums.size();
+	for(int i=0;i<n;i++)
+	{
+	if(st.find(nums[i])!=st.end())
+	{
+		return nums[i];
+	}
+		st.insert(nums[i]);
+	}
+	return 0;
+	}
+};
+
+Probability of finding repeated number
+=======================================
+f you pick any two numbers randomly from the given array, there is a 1/4 chance of getting the repeted number. So, in average, we will find the answer in 4 attempts.
+
+Average Case Time - Θ(4) or Θ(1)
+Worst case ime - O(n)
+Space - O(1)
+
+Proof to 1/4 probability:
+Given that total elements of arr = 2n;
+A.T.Q ,number of repeated elements = n;
+and, number of non repeated elements = n;
+probability = (n/2n) x (n/2n) = 1/4
+
+class Solution {
+public:
+    int repeatedNTimes(vector<int>&nums) {
+        int i = 0, j = 0;
+        while(nums[i = rand() % nums.size()] != nums[j = rand() % nums.size()] || i == j);
+        return nums[i];
+    }
+};
+
+
+
+Intuitive Approach (Pigeonhole principle)
+==========================================
+
+On carefully observing the sequences, we can come to general conclusion that the repeated numbers have to appear either next to each other or alternate next i.e.,
+(nums[i] == nums[i+1]) or (nums[i] == nums[i + 2]).
+
+The only exception is sequence like [a, b, c, a]. So here, the result becomes the last number, so we just return it in the end.
+
+Time - O(n)
+Space - O(1)
+
+
+class Solution {
+public:
+    int repeatedNTimes(vector<int>&nums) {
+        for (int i = 0; i < nums.size() - 2; ++i)
+            if (nums[i] == nums[i + 1] || nums[i] == nums[i + 2])
+                return nums[i];
+        return nums.back(); 
+    }
+};
+
+
+
+
+If count of the particular element of the vector = vector size / 2 then return that element.
+Complexity
+
+    Time complexity:
+    O(n^2)
+
+    Space complexity:
+    O(1)
+
+
+class Solution {
+public:
+    int repeatedNTimes(vector<int>& nums) 
+    {
+        int n = nums.size()/2;
+
+        for(int i=0; i<nums.size(); i++)
+        {
+            int c = count(nums.begin(), nums.end(), nums[i]);
+
+            if(c == n)
+            {
+                return nums[i];
+            }
+
+        }
+        return -1;
+    }
+};
+
+
+C-style array
+===============
+int repeatedNTimes(vector<int>& a) 
+{
+	for(int m[10000]{0}; const auto & i: a)  
+	   if(m[i]++) return i;          	
+	return -1;
+}
+
+
+Unordered_map
+===============
+
+int repeatedNTimes(vector<int>& a) 
+{   
+   for(unordered_map<int, int> m; const auto & i: a)  
+	   if(m[i]++) return i;    
+   return -1;
+}
+
+
+Bitset
+=======
+int repeatedNTimes(vector<int>& a) 
+{   
+   for(bitset<10000> b; const auto & i: a)
+   	if(b.test(i)) 
+   	    return i;
+   	else
+   		b.flip(i);			
+   return -1;
+}
+
+
